@@ -42,11 +42,8 @@ The testbench comprises three tests for a 32 8-bit word FIFO memory: continious 
 3.	Random read/write operation 
 
 	**Random read/write operation (waveform):**
-		![Random read/write operation](./docs/read_write_mix.JPG) 
+		![Random read/write operation](./docs/random.JPG) 
 
-	**Random read/write operation (terminal):**
-		![Random read/write operation](./docs/read_write_mix_2.JPG)  
-	
 
 
 ### Possible Applications
