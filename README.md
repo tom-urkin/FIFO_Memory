@@ -8,8 +8,8 @@ Implementention in SystemVerilog of __synchronous and asynchronous FIFO memory__
 
 The source files  are located at the repository root:
 
-- [Synchronous_FIFO_TB](./Synchronous_FIFO_TB.sv)
-- [Synchronous_FIFO](./Synchronous_FIFO.sv)
+- [FIFO_TB](./FIFO_TB.sv)
+- [FIFO](./FIFO.sv)
 
 Choosing between Synchronous or Asynchronous implementation is carried out by modifying the 'TYPE' parameter in the module instantiation:
 - Synchronous: TYPE=0
@@ -22,7 +22,7 @@ The testbench comprises three tests for a 32 8-bit word FIFO memory: continious 
 **FIFO memory TB:**
 	![FIFO memory TB](./docs/read_write_mix.JPG) 
 
-The results shown here are of an asynchronous FIFO memory implementation. To simulate the synchronous simply change the 'TYPE' parameter in the [Synchronous_FIFO_TB](./Synchronous_FIFO_TB.sv) file.
+The results shown here are of an asynchronous FIFO memory implementation. To simulate the synchronous simply change the 'TYPE' parameter in the [FIFO_TB](./FIFO_TB.sv) file.
 
 1.	Continious writing of random data to the FIFO memory
 
