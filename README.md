@@ -19,8 +19,8 @@ Choosing between Synchronous or Asynchronous implementation is carried out by mo
 
 The testbench comprises three tests for a 32 8-bit word FIFO memory: continious writing (left), continious reading (middle) random read/write operation (right):
 
-	**FIFO memory TB:**
-		![FIFO memory TB](./docs/read_write_mix.JPG) 
+**FIFO memory TB:**
+	![FIFO memory TB](./docs/read_write_mix.JPG) 
 
 1.	Continious writing of random data to the FIFO memory
 
@@ -42,10 +42,10 @@ The testbench comprises three tests for a 32 8-bit word FIFO memory: continious 
 3.	Random read/write operation 
 
 	**Random read/write operation (waveform):**
-		![QuestaSim terminal window](./docs/read_write_mix.JPG) 
+		![Random read/write operation](./docs/read_write_mix.JPG) 
 
 	**Random read/write operation (terminal):**
-		![QuestaSim wave window](./docs/read_write_mix_2.JPG)  
+		![Random read/write operation](./docs/read_write_mix_2.JPG)  
 	
 
 
