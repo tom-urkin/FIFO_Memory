@@ -73,17 +73,17 @@ begin
         wr_en=0;
         #1;									//Added delay to allow the FIFO block to execute before the comparison task 
         if (U1.mem[k] == data_in)
-			begin
-            $display("Data written is %b data stored in memory is %b on iteration number %d- success",data_in,U1.mem[k],k);
-			$display("Remaning memory slots : %d", U1.avail);
-			end
+        begin
+        $display("Data written is %b data stored in memory is %b on iteration number %d- success",data_in,U1.mem[k],k);
+        $display("Remaning memory slots : %d", U1.avail);
+        end
         else if (FIFO_full==1)
-            $display("The FIFO memory is full - write operation was not completed on iteraion %d", k);
+        $display("The FIFO memory is full - write operation was not completed on iteraion %d", k);
         else
-            begin
-                $display("Data written is %b data stored in memory is %b on iteration %d- write oepartion failed",data_in,U1.mem[k],k);
-                $finish;
-            end
+        begin
+        $display("Data written is %b data stored in memory is %b on iteration %d- write oepartion failed",data_in,U1.mem[k],k);
+        $finish;
+        end
 
         end
 
@@ -100,17 +100,17 @@ begin
         rd_en=0;
         #1;
         if (U1.mem[k] == data_out)
-			begin
-            $display("Data read is %b data stored in memory is %b on iteration number %d- success",data_out,U1.mem[k],k);
-			$display("Remaning memory slots : %d", U1.avail);
-			end
+        begin
+        $display("Data read is %b data stored in memory is %b on iteration number %d- success",data_out,U1.mem[k],k);
+        $display("Remaning memory slots : %d", U1.avail);
+        end
         else if (FIFO_empty==1)
-            $display("The FIFO memory is empty - read operation was not completed on iteraion %d", k);
+        $display("The FIFO memory is empty - read operation was not completed on iteraion %d", k);
         else
-            begin
-                $display("Data read is %b data stored in memory is %b on iteration %d- read oepartion failed",data_out,U1.mem[k],k);
-                $finish;
-            end
+        begin
+        $display("Data read is %b data stored in memory is %b on iteration %d- read oepartion failed",data_out,U1.mem[k],k);
+        $finish;
+        end
 
         end
 
@@ -126,8 +126,8 @@ begin
         data_in= $random%8;                    //8-bit random number to be written to the FIFO memory
 		wptr_tst=U1.wptr[ADDR_WIDTH-1:0];
 		rptr_tst= U1.rptr[ADDR_WIDTH-1:0];		
-		if (r_w==0)							   //Write operation
-			begin
+		if (r_w==0)                           //Write operation
+		begin
 				if (FIFO_full==1)
 					begin
 					$display("\nThe FIFO memory is full - write operation was not completed on iteraion %d", k);
@@ -141,49 +141,49 @@ begin
 					wr_en=1;                     //Enabling write operation
 					@(posedge wr_clk)
 					wr_en=0;
-					#1										
+					#1
 					if (U1.mem[wptr_tst] == data_in)
-						begin
-							$display("\nData written is %b data stored in memory is %b on iteration number %d- success",data_in,U1.mem[wptr_tst],k);
-							$display("The wptr value is %d and rptr is %d", U1.wptr, U1.rptr);
-							$display("Remaning memory slots : %d", U1.avail);
-						end
+					begin
+					$display("\nData written is %b data stored in memory is %b on iteration number %d- success",data_in,U1.mem[wptr_tst],k);
+					$display("The wptr value is %d and rptr is %d", U1.wptr, U1.rptr);
+					$display("Remaning memory slots : %d", U1.avail);
+					end
 					else
-						begin
-							$display("Data written is %b data stored in memory is %b on iteration %d- write oepartion failed",data_in,U1.mem[wptr_tst],k);
-							$finish;
-						end
+					begin
+					$display("Data written is %b data stored in memory is %b on iteration %d- write oepartion failed",data_in,U1.mem[wptr_tst],k);
+					$finish;
+					end
 					end
 			end
 		else
 			begin							//Read operation
 				if (FIFO_empty==1)
 				begin
-					$display("\nThe FIFO memory is empty - read operation was not completed on iteraion %d", k);
+				$display("\nThe FIFO memory is empty - read operation was not completed on iteraion %d", k);
+				$display("The wptr value is %d and rptr is %d", U1.wptr, U1.rptr);
+				$display("Remaning memory slots : %d", U1.avail);
+				@(posedge rd_clk);
+				end
+				else 
+				begin
+				@(posedge rd_clk)
+				rd_en=1;
+				@(posedge rd_clk)
+				rd_en=0;
+				#1;
+					if (U1.mem[rptr_tst] == data_out)
+					begin
+					$display("\nData read is %b data stored in memory is %b on iteration number %d- success",data_out,U1.mem[rptr_tst],k);
 					$display("The wptr value is %d and rptr is %d", U1.wptr, U1.rptr);
 					$display("Remaning memory slots : %d", U1.avail);
-					@(posedge rd_clk);					
-				end				
-				else 
-					begin
-					@(posedge rd_clk)
-					rd_en=1;					
-					@(posedge rd_clk)
-					rd_en=0;
-					#1;							
-						if (U1.mem[rptr_tst] == data_out)
-							begin
-							$display("\nData read is %b data stored in memory is %b on iteration number %d- success",data_out,U1.mem[rptr_tst],k);
-							$display("The wptr value is %d and rptr is %d", U1.wptr, U1.rptr);
-							$display("Remaning memory slots : %d", U1.avail);
-							end
-						else
-							begin
-							$display("Data read is %b data stored in memory is %b on iteration %d- read oepartion failed",data_out,U1.mem[rptr_tst],k);
-							$display("The wptr value is %d and rptr is %d", U1.wptr, U1.rptr);
-							$finish;
-							end	
 					end
+					else
+					begin
+					$display("Data read is %b data stored in memory is %b on iteration %d- read oepartion failed",data_out,U1.mem[rptr_tst],k);
+					$display("The wptr value is %d and rptr is %d", U1.wptr, U1.rptr);
+					$finish;
+					end	
+				end
 			end
 
 
