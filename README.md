@@ -22,6 +22,8 @@ The testbench comprises three tests for a 32 8-bit word FIFO memory: continious 
 **FIFO memory TB:**
 	![FIFO memory TB](./docs/read_write_mix.JPG) 
 
+The results shown here are of an asynchronous FIFO memory implementation. To simulate the synchronous simply change the 'TYPE' parameter in the [Synchronous_FIFO_TB](./Synchronous_FIFO_TB.sv) file.
+
 1.	Continious writing of random data to the FIFO memory
 
 	**Continious writing operation (waveform):**
