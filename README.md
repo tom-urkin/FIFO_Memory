@@ -123,9 +123,15 @@ The testbench comprises three tests for a 32 8-bit word FIFO memory: continious 
 	In the last iteration, the entire FIFO memory is printed alongside its relevant section (between 'read' and 'write' pointers).
 	In addition, the final mimicked FIFO memory is printed as well to allow visual comparison.
 	
+**Asynchronous FIFO memory TB with different clock frequencies for the read/write domains:**
 
-3.	Random read/write operation with different clock frequecies for the read/write domains
+A read/write command is randomly applied as done for the synchronous FIFO memory verification (the distribuition can be modified from the TB).
 
+**Random read/write operation with equal probabiities (waveform):**
+	![Random read/write operation](./docs/asynchronous_random_differen_clocks.JPG) 	
+	
+	**Random read/write operation with equal probabiities (terminal):**
+		![Random read/write operation](./docs/asynchronous_random_differen_clocks_terminal.JPG) 
 
 ### Possible Applications
 
