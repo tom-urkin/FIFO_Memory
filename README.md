@@ -51,7 +51,7 @@ The testbench comprises three tests for a 32 8-bit word FIFO memory: continious 
 	
 3.	Random read/write operation 
 
-In the third test, a read/write command is randomly applied (the distribuition can be modified from the TB).
+	In the third test, a read/write command is randomly applied (the distribuition can be modified from the TB).
 
 	**Random read/write operation with equal probabiities (waveform):**
 		![Random read/write operation](./docs/synchronous_random.JPG) 
