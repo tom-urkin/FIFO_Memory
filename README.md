@@ -130,8 +130,8 @@ A read/write command is randomly applied as done for the synchronous FIFO memory
 **Random read/write operation with equal probabiities (waveform):**
 	![Random read/write operation](./docs/asynchronous_random_differen_clocks.JPG) 	
 	
-	**Random read/write operation with equal probabiities (terminal):**
-		![Random read/write operation](./docs/asynchronous_random_differen_clocks_terminal.JPG) 
+**Random read/write operation with equal probabiities (terminal):**
+	![Random read/write operation](./docs/asynchronous_random_differen_clocks_terminal.JPG) 
 
 ### Possible Applications
 

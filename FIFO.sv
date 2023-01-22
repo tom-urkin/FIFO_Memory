@@ -58,28 +58,28 @@ input logic rd_rst;                                           //Read-side asynch
 input logic rd_en;                                            //Read request from external logic
 
 //Outputs
-output logic FIFO_empty;                                    //Logic high when the FIFO memory is empty - calculated at the 'read' side
-output logic FIFO_full;                                     //Logic high when the FIFO memory is full - calculated at the 'write' side
-output logic [(DATA_WIDTH-1):0] data_out;                   //FIFO memory output
-output logic [ADDR_WIDTH:0] avail;                          //Number of available memory slots - calculated at the 'write' side
+output logic FIFO_empty;                                      //Logic high when the FIFO memory is empty - calculated at the 'read' side
+output logic FIFO_full;                                       //Logic high when the FIFO memory is full - calculated at the 'write' side
+output logic [(DATA_WIDTH-1):0] data_out;                     //FIFO memory output
+output logic [ADDR_WIDTH:0] avail;                            //Number of available memory slots - calculated at the 'write' side
 
 //Internal signals
-logic [ADDR_WIDTH:0] rptr;                                  //Read pointer in the 'read' domain
-logic [ADDR_WIDTH:0] wptr;                                  //Write pointer in the 'write'domain
-logic [DATA_WIDTH-1:0] mem [(2**ADDR_WIDTH-1):0];           //FIFO memory registers (32 8-bit words in defaults settings)
+logic [ADDR_WIDTH:0] rptr;                                    //Read pointer in the 'read' domain
+logic [ADDR_WIDTH:0] wptr;                                    //Write pointer in the 'write'domain
+logic [DATA_WIDTH-1:0] mem [(2**ADDR_WIDTH-1):0];             //FIFO memory registers (32 8-bit words in defaults settings)
 
-logic [ADDR_WIDTH:0] rgray;											//Gray-code equivalent of the read pointer
-logic [ADDR_WIDTH:0] wgray;											//Gray-code equivalent of the write pointer
+logic [ADDR_WIDTH:0] rgray;                                   //Gray-code equivalent of the read pointer
+logic [ADDR_WIDTH:0] wgray;                                   //Gray-code equivalent of the write pointer
 
-logic [ADDR_WIDTH:0] w_ff1_rgray;									//Two-flop synchronization to capture the gray-coded read pointer
-logic [ADDR_WIDTH:0] w_ff2_rgray;									//Two-flop synchronization to capture the gray-coded read pointer
+logic [ADDR_WIDTH:0] w_ff1_rgray;                             //Two-flop synchronization to capture the gray-coded read pointer
+logic [ADDR_WIDTH:0] w_ff2_rgray;                             //Two-flop synchronization to capture the gray-coded read pointer
 
-logic [ADDR_WIDTH:0] r_ff1_wgray;									//Two-flop synchronization to capture the gray-coded write pointer
-logic [ADDR_WIDTH:0] r_ff2_wgray;									//Two-flop synchronization to capture the gray-coded write pointer
+logic [ADDR_WIDTH:0] r_ff1_wgray;                             //Two-flop synchronization to capture the gray-coded write pointer
+logic [ADDR_WIDTH:0] r_ff2_wgray;                             //Two-flop synchronization to capture the gray-coded write pointer
 
 logic [ADDR_WIDTH:0] binary_w_ff2_rgray;
 
-integer i;                                                   //Used for reseting the FIFO memory
+integer i;                                                          //Used for reseting the FIFO memory
 
 //HDL code
 
@@ -87,7 +87,7 @@ generate
   if (TYPE==0)	begin //Synchronous FIFO memory. wr_clk and rd_clk are the same in synchronous implementation (so are the reset signals).
     counter #(.LENGTH_COUNTER(ADDR_WIDTH)) counter_w(.rst(wr_rst), .clk(wr_clk), .en(((~FIFO_full)&&(wr_en))), .count(wptr));
     counter #(.LENGTH_COUNTER(ADDR_WIDTH)) counter_r(.rst(wr_rst), .clk(wr_clk), .en(((~FIFO_empty)&&(rd_en))), .count(rptr));
-		
+
     always @(posedge wr_clk or negedge wr_rst)
       if (!wr_rst) begin
         for (i=0; i<(2**ADDR_WIDTH); i=i+1)	//Reseting the FIFO memory

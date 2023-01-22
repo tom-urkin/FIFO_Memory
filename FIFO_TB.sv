@@ -35,8 +35,8 @@ logic [DATA_WIDTH-1:0] queue_1 [$];     //Mimicked FIFO memory
 logic [DATA_WIDTH-1:0] queue_2 [$];     //Used for verification purposes in the 'compare' task
 logic [DATA_WIDTH-1:0] tmp;             //Temporary variable fot the 'popping' operation of the mimicked FIFO memory
 
-logic FIFO_full_tst;					//FIFO full indicator for the mimicked memory (queue_1)
-logic FIFO_full_tst_delayed;			//Delayed version of the 'FIFO_full_tst' used in asynchrnous implementation (synchronization logic)
+logic FIFO_full_tst;                    //FIFO full indicator for the mimicked memory (queue_1)
+logic FIFO_full_tst_delayed;            //Delayed version of the 'FIFO_full_tst' used in asynchrnous implementation (synchronization logic)
 logic temp_reg_wr;                      //Temporary variable used in the synchronization lofgic of the FIFO_full indicator for the mimicked memory
 
 logic FIFO_empty_tst;                   //FIFO empry indicator for the mimicked memory (queue_1)
@@ -86,7 +86,7 @@ endtask
 
 
 //FIFO memory module instantiation
-FIFO #(.DATA_WIDTH(DATA_WIDTH), .ADDR_WIDTH(ADDR_WIDTH), .TYPE(SYNCHRONOUS)) U1(
+FIFO #(.DATA_WIDTH(DATA_WIDTH), .ADDR_WIDTH(ADDR_WIDTH), .TYPE(ASYNCHRONOUS)) U1(
                 .wr_clk(wr_clk),
                 .wr_rst(wr_rst),
                 .data_in(data_in),
@@ -102,13 +102,14 @@ FIFO #(.DATA_WIDTH(DATA_WIDTH), .ADDR_WIDTH(ADDR_WIDTH), .TYPE(SYNCHRONOUS)) U1(
 
 //Initial blocks
 initial begin
-Simulated_FIFO_TYPE=SYNCHRONOUS;  //Manually change to match U1.TYPE
+Simulated_FIFO_TYPE=ASYNCHRONOUS;  //Manually change to match U1.TYPE
 wr_rst=1'b0;
 rd_rst=1'b0;
 wr_clk=1'b0;
 rd_clk=1'b0;
 rd_en=0;
 wr_en=0;
+tmp=0;
 
 r_w=0;
 @(posedge wr_clk)
@@ -130,7 +131,7 @@ for(k=0; k<(2**ADDR_WIDTH+10); k++) begin         //Continious writing operation
     $display("Data was not written - FIFO memory is full on iteration %d", k);
 
   @(posedge wr_clk)
-    wr_en=1;                             //Enabling write operation
+    wr_en=1;                                    //Enabling write operation
   @(posedge wr_clk)
     wr_en=0;
   #1;
@@ -139,7 +140,7 @@ for(k=0; k<(2**ADDR_WIDTH+10); k++) begin         //Continious writing operation
   // queue_1[4]=8'd3;
 
   FIFO_full_tst = (queue_1.size()==2**ADDR_WIDTH);
-  FIFO_empty_tst = (queue_1.size()==0);		
+  FIFO_empty_tst = (queue_1.size()==0);	
 
   compare();
  end	
@@ -155,7 +156,7 @@ for(k=0; k<(2**ADDR_WIDTH+5); k++) begin    //
   if (!FIFO_empty_tst_final)
     tmp=queue_1.pop_front();
   else
-    $display("Read operation not completed on iteration %d - the FIFO memory is empty", k);       
+    $display("\nRead operation not completed on iteration %d - the FIFO memory is empty", k);       
 
   @(posedge rd_clk)
     rd_en=1;                         //Enabling read operation
@@ -262,6 +263,12 @@ always
 begin
 #(CLK_PERIOD/2);
 wr_clk=~wr_clk;
+//rd_clk=~rd_clk;
+end
+
+always
+begin
+#(CLK_PERIOD/3);
 rd_clk=~rd_clk;
 end
 
