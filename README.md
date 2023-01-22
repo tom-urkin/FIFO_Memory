@@ -79,6 +79,7 @@ The testbench comprises three tests for a 32 8-bit word FIFO memory: continious 
 	In addition, the final mimicked FIFO memory is printed as well to allow visual comparison.	
 
 **Asynchronous FIFO memory TB:**
+The testbench comprises three tests for a 32 8-bit word FIFO memory: continious writing (left), continious reading (middle) random read/write operation (right):
 
 ![Aynchronous FIFO memory TB](./docs/asynchronous_read_write_mix.JPG) 
 
@@ -122,6 +123,9 @@ The testbench comprises three tests for a 32 8-bit word FIFO memory: continious 
 	In the last iteration, the entire FIFO memory is printed alongside its relevant section (between 'read' and 'write' pointers).
 	In addition, the final mimicked FIFO memory is printed as well to allow visual comparison.
 	
+
+3.	Random read/write operation with different clock frequecies for the read/write domains
+
 
 ### Possible Applications
 
