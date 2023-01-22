@@ -29,25 +29,25 @@ The testbench comprises three tests for a 32 8-bit word FIFO memory: continious 
 	**Continious writing operation (waveform):**
 		![Continious writing operation](./docs/synchronous_write.JPG) 
 
-As can be seen, the FIFO_full signal rises to logic high when 32 consecutive write operations are executed and the memory is full. 
-Please note that the 'FIFO_full_tst_final' mimicks the 'FIFO_full' signal.
+	As can be seen, the FIFO_full signal rises to logic high when 32 consecutive write operations are executed and the memory is full. 
+	Please note that the 'FIFO_full_tst_final' mimicks the 'FIFO_full' signal.
 
 	**Continious writing operation (terminal view):**
 		![QuestaSim wave window](./docs/synchronous_write_terminal.JPG)  
 	
-As can be seen in the terminal view of the first iterations, the mimicked FIFO memory matches the actual FIFO memory ('verification queue')	
+	As can be seen in the terminal view of the first iterations, the mimicked FIFO memory matches the actual FIFO memory ('verification queue')	
 
 2.	Continious reading operation from the FIFO memory  
 	
 	**Continious reading operation (waveform):**
 		![QuestaSim terminal window](./docs/synchronous_read.JPG) 
 
-As can be seen, the read values ('data_out') matches the written values of the previous test.
+	As can be seen, the read values ('data_out') matches the written values of the previous test.
 
 	**Continious writing operation (terminal):**
 		![QuestaSim wave window](./docs/synchronous_read_terminal.JPG)  
 
-Here, a section of the terminal output is shown to illustrate the actual values stored in the mimiced and the actual FIFO_memory
+	Here, a section of the terminal output is shown to illustrate the actual values stored in the mimiced and the actual FIFO_memory
 	
 3.	Random read/write operation 
 
