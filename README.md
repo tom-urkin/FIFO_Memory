@@ -80,7 +80,7 @@ The testbench comprises three tests for a 32 8-bit word FIFO memory: continious 
 
 **Asynchronous FIFO memory TB:**
 
-	![Aynchronous FIFO memory TB](./docs/asynchronous_read_write_mix.JPG) 
+![Aynchronous FIFO memory TB](./docs/asynchronous_read_write_mix.JPG) 
 
 1.	Continious writing of random data to the FIFO memory
 
@@ -105,7 +105,23 @@ The testbench comprises three tests for a 32 8-bit word FIFO memory: continious 
 	**Continious writing operation (terminal):**
 		![QuestaSim wave window](./docs/asynchronous_read_terminal.JPG)  
 
-	Here, a section of the terminal output is shown to illustrate the actual values stored in the mimiced and the actual FIFO_memory
+	Here, a section of the terminal output is shown to illustrate the actual values stored in the mimiced and the actual FIFO_memory as well as the 'FIFO_empty' condition verification.
+
+3.	Random read/write operation 
+
+	In the third test, a read/write command is randomly applied as done for the synchronous FIFO memory verification (the distribuition can be modified from the TB).
+
+	**Random read/write operation with equal probabiities (waveform):**
+		![Random read/write operation](./docs/asynchronous_random.JPG) 
+		
+	As can be seem, the FIFO_empty condition is reached - this is since the FIFO is empty upon test initiation.
+	
+	**Random read/write operation with equal probabiities (terminal):**
+		![Random read/write operation](./docs/asynchronous_random_terminal.JPG) 
+
+	In the last iteration, the entire FIFO memory is printed alongside its relevant section (between 'read' and 'write' pointers).
+	In addition, the final mimicked FIFO memory is printed as well to allow visual comparison.
+	
 
 ### Possible Applications
 
