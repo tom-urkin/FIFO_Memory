@@ -66,6 +66,17 @@ The testbench comprises three tests for a 32 8-bit word FIFO memory: continious 
 	
 	In the last iteration, the entire FIFO memory is printed alongside its relevant section (between 'read' and 'write' pointers).
 	In addition, the final mimicked FIFO memory is printed as well to allow visual comparison.
+	
+	**Random read/write operation with unequal probabiities (write operation is carried 75% of the time)(waveform):**
+		![Random read/write operation](./docs/synchronous_random_unequal_dist.JPG)
+	
+	As can be seem, the FIFO_full condition is reached in the majority of the iterations in accordance with the 'write' probabiity used (75%).
+	
+	**Random read/write operation with unequal probabiities (terminal):**
+		![Random read/write operation](./docs/synchronous_random_unequal_dist_terminal.JPG	
+	
+	In the last iteration, the entire FIFO memory is printed alongside its relevant section (between 'read' and 'write' pointers).
+	In addition, the final mimicked FIFO memory is printed as well to allow visual comparison.	
 
 **Asynchronous FIFO memory TB:**
 
