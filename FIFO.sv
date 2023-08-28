@@ -16,7 +16,7 @@ always @(posedge clk or negedge rst)
   if (!rst)
     count<='0;
   else if (en)
-    count<=count+$bits(count)'('d1);	
+    count<=count+$bits(count)'('d1);
 endmodule
 
 module synchronizer(rst,clk,in,out);
@@ -32,7 +32,7 @@ output logic [LENGTH:0] out;
 logic [LENGTH:0] temp_reg;
 
 //HDL code
-always @(posedge clk or negedge rst)					
+always @(posedge clk or negedge rst)
   if (!rst)
     {out,temp_reg}<={($bits(out))'('d0),($bits(temp_reg))'('d0)};
   else
@@ -79,29 +79,29 @@ logic [ADDR_WIDTH:0] r_ff2_wgray;                             //Two-flop synchro
 
 logic [ADDR_WIDTH:0] binary_w_ff2_rgray;
 
-integer i;                                                          //Used for reseting the FIFO memory
+integer i;                                                    //Used for reseting the FIFO memory
 
 //HDL code
 
 generate
-  if (TYPE==0)	begin //Synchronous FIFO memory. wr_clk and rd_clk are the same in synchronous implementation (so are the reset signals).
+  if (TYPE==0) begin                                         //Synchronous FIFO memory. wr_clk and rd_clk are the same in synchronous implementation (so are the reset signals).
     counter #(.LENGTH_COUNTER(ADDR_WIDTH)) counter_w(.rst(wr_rst), .clk(wr_clk), .en(((~FIFO_full)&&(wr_en))), .count(wptr));
     counter #(.LENGTH_COUNTER(ADDR_WIDTH)) counter_r(.rst(wr_rst), .clk(wr_clk), .en(((~FIFO_empty)&&(rd_en))), .count(rptr));
 
     always @(posedge wr_clk or negedge wr_rst)
       if (!wr_rst) begin
-        for (i=0; i<(2**ADDR_WIDTH); i=i+1)	//Reseting the FIFO memory
+        for (i=0; i<(2**ADDR_WIDTH); i=i+1)                  //Reseting the FIFO memory
           mem[i]<='0;
         data_out<='0;
       end
-      else if ((~FIFO_full)&&(wr_en))  //Write operation	
-        mem[wptr[ADDR_WIDTH-1:0]]<=data_in;	
-      else if ((~FIFO_empty)&&rd_en)   //Read operation
+      else if ((~FIFO_full)&&(wr_en))                        //Write operation
+        mem[wptr[ADDR_WIDTH-1:0]]<=data_in;
+      else if ((~FIFO_empty)&&rd_en)                         //Read operation
         data_out<=mem[rptr[ADDR_WIDTH-1:0]];
-	
-    assign FIFO_empty = (wptr==rptr) ? 1'b1 : 1'b0;  //If the pointers are equal there is no new data to be read
-    assign FIFO_full = ({~wptr[ADDR_WIDTH],wptr[ADDR_WIDTH-1:0]}==rptr) ? 1'b1 : 1'b0;  //If the (ADDR_WIDTH-1) LSB bits are equal and the MSB is with reversed polarity, the FIFO memory is full
-    assign avail = $bits(wptr)'(2**ADDR_WIDTH) - (wptr-rptr);  //Number of unwritten memory slots
+
+    assign FIFO_empty = (wptr==rptr) ? 1'b1 : 1'b0;                                      //If the pointers are equal there is no new data to be read
+    assign FIFO_full = ({~wptr[ADDR_WIDTH],wptr[ADDR_WIDTH-1:0]}==rptr) ? 1'b1 : 1'b0;   //If the (ADDR_WIDTH-1) LSB bits are equal and the MSB is with reversed polarity, the FIFO memory is full
+    assign avail = $bits(wptr)'(2**ADDR_WIDTH) - (wptr-rptr);                            //Number of unwritten memory slots
   end
 		
   else begin  //Asynchronous FIFO memory
@@ -114,34 +114,31 @@ generate
       else if ((~FIFO_full)&&(wr_en))
         mem[wptr[ADDR_WIDTH-1:0]]<=data_in;
 
-    assign wgray = wptr^(wptr>>1);  //Converting write pointer to its gray-code equivalent
-    synchronizer #(.LENGTH(ADDR_WIDTH)) synchronizer_w (.rst(wr_rst),.clk(wr_clk),.in(rgray),.out(w_ff2_rgray));  //Capture gray-coded read pointer
-    assign FIFO_full = (~wgray[ADDR_WIDTH-:2]==w_ff2_rgray[ADDR_WIDTH-:2])&&(wgray[ADDR_WIDTH-2:0]==w_ff2_rgray[ADDR_WIDTH-2:0]);																	
-			
-    always @(*) begin //Convert from Gray to Binary
+    assign wgray = wptr^(wptr>>1);                                                                                                       //Converting write pointer to its gray-code equivalent
+    synchronizer #(.LENGTH(ADDR_WIDTH)) synchronizer_w (.rst(wr_rst),.clk(wr_clk),.in(rgray),.out(w_ff2_rgray));                         //Capture gray-coded read pointer
+    assign FIFO_full = (~wgray[ADDR_WIDTH-:2]==w_ff2_rgray[ADDR_WIDTH-:2])&&(wgray[ADDR_WIDTH-2:0]==w_ff2_rgray[ADDR_WIDTH-2:0]);
+
+    always @(*) begin                                                                                                                    //Convert from Gray to Binary
       binary_w_ff2_rgray='0;
       for (i=0; i<(ADDR_WIDTH+1); i=i+1) 
         if (i==0)
           binary_w_ff2_rgray[ADDR_WIDTH]=w_ff2_rgray[ADDR_WIDTH];
         else
           binary_w_ff2_rgray[ADDR_WIDTH-i]=binary_w_ff2_rgray[ADDR_WIDTH-i+1]^w_ff2_rgray[ADDR_WIDTH-i];
-    end				
-    assign avail=2**ADDR_WIDTH-(wptr-binary_w_ff2_rgray);  //Number of unwritten memory slots			
-  //Read-side logic		
+    end
+    assign avail=2**ADDR_WIDTH-(wptr-binary_w_ff2_rgray);                                                                                 //Number of unwritten memory slots	
+  //Read-side logic
     counter #(.LENGTH_COUNTER(ADDR_WIDTH)) counter_r(.rst(rd_rst), .clk(rd_clk), .en(((~FIFO_empty)&&(rd_en))), .count(rptr));
-	
+
     always @(posedge rd_clk or negedge rd_rst)
       if (!rd_rst)
         data_out<='0;
       else if ((rd_en)&&(!FIFO_empty))
         data_out<=mem[rptr[ADDR_WIDTH-1:0]];
-		  
-    assign rgray = rptr^(rptr>>1);  //Converting read pointer to its gray-code equivalent					    
-    synchronizer #(.LENGTH(ADDR_WIDTH)) synchronizer_r (.rst(rd_rst),.clk(rd_clk),.in(wgray),.out(r_ff2_wgray)); //Capture gray-coded write pointer
-    assign FIFO_empty = (r_ff2_wgray==rgray);						//FIFO-empty calculation		
-	 
-  end
-		
-endgenerate
 
+    assign rgray = rptr^(rptr>>1);                                                                                                       //Converting read pointer to its gray-code equivalent
+    synchronizer #(.LENGTH(ADDR_WIDTH)) synchronizer_r (.rst(rd_rst),.clk(rd_clk),.in(wgray),.out(r_ff2_wgray));                         //Capture gray-coded write pointer
+    assign FIFO_empty = (r_ff2_wgray==rgray);                                                                                            //FIFO-empty calculation
+  end
+endgenerate
 endmodule

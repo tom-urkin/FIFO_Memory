@@ -60,7 +60,7 @@ if ((U1.rptr[ADDR_WIDTH-1:0]>U1.wptr[ADDR_WIDTH-1:0])||((U1.rptr[ADDR_WIDTH-1:0]
     queue_2.push_back(U1.mem[s]);
 end
 $display("\nThe verification queue at iteration %d  is: %p and the mimicked FIFO memory is: %p", k, queue_2, queue_1);
-if (queue_1!=queue_2) begin	//Comparison of the mimicked FIFO memory (queue_1) and the relevant section of the actual FIFO memory (queue_2)
+if (queue_1!=queue_2) begin                                //Comparison of the mimicked FIFO memory (queue_1) and the relevant section of the actual FIFO memory (queue_2)
   $display("Failed on iteration %d", k);
   $display("\nThe verification queue at iteration %d  is: %p and the mimicked FIFO memory is: %p", k, queue_2, queue_1);
   $display("The write pointes is %d and the read pointer is %d", U1.wptr, U1.rptr);
@@ -68,7 +68,7 @@ if (queue_1!=queue_2) begin	//Comparison of the mimicked FIFO memory (queue_1) a
 end
 endtask
 
-task reset_signals();  //This task reset all the queues and relevant signals before each test
+task reset_signals();                                     //This task reset all the queues and relevant signals before each test
 queue_1={};
 queue_2={};
 wr_rst=1'b0;
@@ -102,7 +102,7 @@ FIFO #(.DATA_WIDTH(DATA_WIDTH), .ADDR_WIDTH(ADDR_WIDTH), .TYPE(ASYNCHRONOUS)) U1
 
 //Initial blocks
 initial begin
-Simulated_FIFO_TYPE=ASYNCHRONOUS;  //Manually change to match U1.TYPE
+Simulated_FIFO_TYPE=ASYNCHRONOUS;                        //Manually change to match U1.TYPE
 wr_rst=1'b0;
 rd_rst=1'b0;
 wr_clk=1'b0;
@@ -117,13 +117,13 @@ r_w=0;
 @(posedge rd_clk)
   rd_rst=1'b1;
 
-    //----------------------------------------//
+//----------------------------------------//
 //Test #1: Write to FIFO memory
 reset_signals();	
 $display("Initiate continious writing ('pushing') test\n");
 
-for(k=0; k<(2**ADDR_WIDTH+10); k++) begin         //Continious writing operation
-  data_in= $dist_uniform(SEED,0,40);              //8-bit random number to be written to the FIFO memory
+for(k=0; k<(2**ADDR_WIDTH+10); k++) begin            //Continious writing operation
+  data_in= $dist_uniform(SEED,0,40);                 //8-bit random number to be written to the FIFO memory
   #1;
   if (!FIFO_full_tst_final)
     queue_1.push_back(data_in);
@@ -131,7 +131,7 @@ for(k=0; k<(2**ADDR_WIDTH+10); k++) begin         //Continious writing operation
     $display("Data was not written - FIFO memory is full on iteration %d", k);
 
   @(posedge wr_clk)
-    wr_en=1;                                    //Enabling write operation
+    wr_en=1;                                        //Enabling write operation
   @(posedge wr_clk)
     wr_en=0;
   #1;
@@ -146,12 +146,12 @@ for(k=0; k<(2**ADDR_WIDTH+10); k++) begin         //Continious writing operation
  end	
  $display("\nWrite test passed!");
 
-    //----------------------------------------//
+//----------------------------------------//
 //Test #2: Read from FIFO memory
 //Note: The reset task is no used here since this test reads the written values from previous test
 
 $display("\nInitiate continious reading ('popping') test\n");
-for(k=0; k<(2**ADDR_WIDTH+5); k++) begin    //
+for(k=0; k<(2**ADDR_WIDTH+5); k++) begin
   #1;
   if (!FIFO_empty_tst_final)
     tmp=queue_1.pop_front();
@@ -175,21 +175,20 @@ end
 $display("\nRead test passed!\n");
 
 //----------------------------------------//
-
 //Test #3: Reading and writing from the FIFO memory for 10*FIFO depth times with randomized read/write operations
 reset_signals();
 $display("Initiate 3rd test - randomly reading/writing random values\n");
 
 for(k=0; k<2**ADDR_WIDTH*17; k++) begin
-  r_w= $dist_uniform(SEED,0,1)==1;       //randomizing read/write operation. '0' for read and '1' for write operation. Modify the condition to use different probabilties.       
-  data_in= $dist_uniform(SEED,0,40);     //8-bit random number to be written to the FIFO memory
-  if (r_w==0) begin                          //Write operation
+  r_w= $dist_uniform(SEED,0,1)==1;                 //randomizing read/write operation. '0' for read and '1' for write operation. Modify the condition to use different probabilties.       
+  data_in= $dist_uniform(SEED,0,40);               //8-bit random number to be written to the FIFO memory
+  if (r_w==0) begin                                //Write operation
     #1;
     if (!FIFO_full_tst_final)
       queue_1.push_back(data_in);	
 
       @(posedge wr_clk)
-        wr_en=1;                             //Enabling write operation
+        wr_en=1;                                   //Enabling write operation
       @(posedge wr_clk)
         wr_en=0;
     #1;
@@ -200,7 +199,7 @@ for(k=0; k<2**ADDR_WIDTH*17; k++) begin
       tmp=queue_1.pop_front();
 
     @(posedge rd_clk)
-      rd_en=1;                         //Enabling read operation
+      rd_en=1;                                     //Enabling read operation
     @(posedge rd_clk)
       rd_en=0;
     #1;
