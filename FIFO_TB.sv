@@ -87,18 +87,18 @@ endtask
 
 //FIFO memory module instantiation
 FIFO #(.DATA_WIDTH(DATA_WIDTH), .ADDR_WIDTH(ADDR_WIDTH), .TYPE(ASYNCHRONOUS)) U1(
-                .wr_clk(wr_clk),
-                .wr_rst(wr_rst),
-                .data_in(data_in),
-                .wr_en(wr_en),
-                .FIFO_full(FIFO_full),
-                .avail(avail),
-                .rd_clk(rd_clk),
-                .rd_rst(rd_rst),
-                .data_out(data_out),
-                .rd_en(rd_en),
-                .FIFO_empty(FIFO_empty)
-                );
+                                                                                .wr_clk(wr_clk),
+                                                                                .wr_rst(wr_rst),
+                                                                                .data_in(data_in),
+                                                                                .wr_en(wr_en),
+                                                                                .FIFO_full(FIFO_full),
+                                                                                .avail(avail),
+                                                                                .rd_clk(rd_clk),
+                                                                                .rd_rst(rd_rst),
+                                                                                .data_out(data_out),
+                                                                                .rd_en(rd_en),
+                                                                                .FIFO_empty(FIFO_empty)
+                                                                               );
 
 //Initial blocks
 initial begin
